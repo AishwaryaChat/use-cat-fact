@@ -1,21 +1,19 @@
-import * as React from 'react'
+import {useState, useEffect} from 'react'
 
-export const useMyHook = () => {
-  let [{
-    counter
-  }, setState] = React.useState({
-    counter: 0
-  })
-
-  React.useEffect(() => {
-    let interval = window.setInterval(() => {
-      counter++
-      setState({counter})
-    }, 1000)
-    return () => {
-      window.clearInterval(interval)
-    }
+export const useCatFact = () => {
+  const [fact, setFact] = useState("")
+  const [loading, setLoading] = useState(false)
+  useEffect(() => {
+      async function getQuote() {
+          setLoading(true)
+          const response = await fetch("https://cat-fact.herokuapp.com/facts")
+          const data = await response.json()
+          const quote = data[0].text
+          console.log("quote", quote)
+          setLoading(false)
+          setFact(quote)
+      }
+      getQuote()
   }, [])
-
-  return counter
+  return {fact, loading}
 }

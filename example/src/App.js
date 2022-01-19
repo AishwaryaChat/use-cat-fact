@@ -1,12 +1,14 @@
 import React from 'react'
-import { useMyHook } from '@aishchat13/use-cat-fact'
+import { useCatFact } from '@aishchat13/use-cat-fact'
 
 const App = () => {
-  const example = useMyHook()
-  return (
+  const {fact, loading} = useCatFact()
+  if(loading) return <p>Loading....</p>
+  if(fact) return (
     <div>
-      {example}
+      {fact}
     </div>
   )
+  return null
 }
 export default App

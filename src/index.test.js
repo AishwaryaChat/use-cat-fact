@@ -1,29 +1,19 @@
-import { useMyHook } from './'
-import { renderHook, act } from "@testing-library/react-hooks";
+import { useCatFact } from './'
+import { renderHook } from "@testing-library/react-hooks";
 
 // mock timer using jest
 jest.useFakeTimers();
 
-describe('useMyHook', () => {
-  it('updates every second', () => {
-    const { result } = renderHook(() => useMyHook());
+describe('useCatFact', () => {
+  test('should return an object with keys: loading, fact', () => {
+    const {result} = renderHook(() => useCatFact())
+    expect(result.current).toHaveProperty('loading')
+    expect(result.current).toHaveProperty('fact')
+  })
 
-    expect(result.current).toBe(0);
-
-    // Fast-forward 1sec
-    act(() => {
-      jest.advanceTimersByTime(1000);
-    });
-
-    // Check after total 1 sec
-    expect(result.current).toBe(1);
-
-    // Fast-forward 1 more sec
-    act(() => {
-      jest.advanceTimersByTime(1000);
-    });
-
-    // Check after total 2 sec
-    expect(result.current).toBe(2);
+  test('should set loading to true after initial call', () => {
+    const {result} = renderHook(() => useCatFact())
+    expect(result.current.loading).toBe(true)
+    expect(typeof result.current.fact).toBe('string')
   })
 })
